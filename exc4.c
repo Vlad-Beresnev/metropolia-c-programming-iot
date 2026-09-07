@@ -1,32 +1,45 @@
 #include <stdio.h>
 
 int read_integer(void) {
-    int solo;
-    int index = 0;
-    float sum = 0;
+    int number = 0;
+    int status = 0;
+
     do {
-        printf("Enter positive numbers or negative to stop: ");
-        scanf("%d", &solo);
-        if (scanf("%d", &solo) != 1) {
+        status = scanf("%d", &number);
+        if (status != 1) {
             while (getchar() != '\n');
-            printf("Invalid input");
+            printf("invalid input\n");
         }
-        if (solo == 0) {
-            printf("Invalid input");
-        } else {
-            if (solo == -1 ) {
-                return 0;
-            } else {
-                index = index + 1;
-                sum = sum + solo;
-            }
-        }
-    } while (solo > 0);
-    float avg = sum / index;
-    printf("You entered 5 positive numbers. The average is: %.3f\n", avg);
-    return 0;
+    } while (status != 1);
+
+    return number;
 }
 
 int main(void) {
-    read_integer();
+    int number = 0;
+    int count = 0;
+    float sum = 0;
+
+    do {
+        printf("Enter positive numbers or negative to stop: ");
+        number = read_integer();
+
+        if (number == 0) {
+            printf("Zero is not positive, enter a positive number\n");
+        }
+        else if (number > 0) {
+            count = count + 1;
+            sum = sum + number;
+        }
+    } while (number >= 0);
+
+    if (count > 0) {
+        printf("You entered %d positive numbers. The average is: %.3f\n",
+               count, sum / count);
+    }
+    else {
+        printf("You entered 0 positive numbers.\n");
+    }
+
+    return 0;
 }

@@ -42,13 +42,13 @@ int exc3(void) {
         }
     } while (student_id != 0);
 
-    printf("\nStudent\tGrade\n");
+    printf("\nStudent Grade\n");
     for (i = 0; i < num_students; i++) {
         if (grades[i] == -1) {
-            printf("%d\tN/A\n", i + 1);
+            printf("%d N/A\n", i + 1);
         }
         else {
-            printf("%d\t%d\n", i + 1, grades[i]);
+            printf("%d %d\n", i + 1, grades[i]);
         }
     }
 
