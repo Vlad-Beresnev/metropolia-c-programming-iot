@@ -14,51 +14,51 @@ int main(void) {
     int character;
     int length;
     int memory_error = 0;
+    int finished = 0;
     nnode *head = NULL;
     nnode *tail = NULL;
     nnode *current;
 
-    while (1) {
+    do {
         printf("Enter a number or end to stop: ");
         if (fgets(input, sizeof(input), stdin) == NULL) {
-            break;
-        }
-
-        length = strlen(input);
-        if (length == sizeof(input) - 1 && input[length - 1] != '\n') {
-            while ((character = getchar()) != '\n' && character != EOF) {
-            }
-            printf("Invalid input\n");
-            continue;
-        }
-        if (length > 0 && input[length - 1] == '\n') {
-            input[length - 1] = '\0';
-        }
-
-        if (strcmp(input, "end") == 0) {
-            break;
-        }
-        if (sscanf(input, "%d %c", &number, &extra) != 1) {
-            printf("Invalid input\n");
-            continue;
-        }
-
-        current = (nnode *) malloc(sizeof(nnode));
-        if (current == NULL) {
-            fprintf(stderr, "Could not allocate memory\n");
-            memory_error = 1;
-            break;
-        }
-        current->number = number;
-        current->next = NULL;
-
-        if (head == NULL) {
-            head = current;
+            finished = 1;
         } else {
-            tail->next = current;
+            length = strlen(input);
+            if (length == sizeof(input) - 1 && input[length - 1] != '\n') {
+                while ((character = getchar()) != '\n' && character != EOF) {
+                }
+                printf("Invalid input\n");
+            } else {
+                if (length > 0 && input[length - 1] == '\n') {
+                    input[length - 1] = '\0';
+                }
+
+                if (strcmp(input, "end") == 0) {
+                    finished = 1;
+                } else if (sscanf(input, "%d %c", &number, &extra) != 1) {
+                    printf("Invalid input\n");
+                } else {
+                    current = (nnode *) malloc(sizeof(nnode));
+                    if (current == NULL) {
+                        fprintf(stderr, "Could not allocate memory\n");
+                        memory_error = 1;
+                        finished = 1;
+                    } else {
+                        current->number = number;
+                        current->next = NULL;
+
+                        if (head == NULL) {
+                            head = current;
+                        } else {
+                            tail->next = current;
+                        }
+                        tail = current;
+                    }
+                }
+            }
         }
-        tail = current;
-    }
+    } while (finished == 0);
 
     if (memory_error == 0) {
         printf("Entered numbers:\n");
