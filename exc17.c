@@ -24,43 +24,41 @@ bool generate_password(char *password, int size, const char *word) {
 int main(void) {
     char word[32];
     char password[64];
-    int running = 1;
     int length;
     int character;
     int too_long;
 
     srand((unsigned int) time(NULL));
 
-    while (running == 1) {
+    do {
         printf("Enter a word or stop to quit: ");
         if (fgets(word, sizeof(word), stdin) == NULL) {
-            running = 0;
-        } else {
-            length = strlen(word);
-            too_long = 0;
+            break;
+        }
+        length = strlen(word);
+        too_long = 0;
 
-            if (length > 0 && word[length - 1] == '\n') {
-                word[length - 1] = '\0';
-            } else if (length == sizeof(word) - 1) {
-                character = getchar();
-                if (character != '\n' && character != EOF) {
-                    too_long = 1;
-                    while ((character = getchar()) != '\n' && character != EOF) {
-                    }
+        if (length > 0 && word[length - 1] == '\n') {
+            word[length - 1] = '\0';
+        } else if (length == sizeof(word) - 1) {
+            character = getchar();
+            if (character != '\n' && character != EOF) {
+                too_long = 1;
+                while ((character = getchar()) != '\n' && character != EOF) {
                 }
             }
+        }
 
-            if (too_long == 1) {
-                printf("Word is too long\n");
-            } else if (strcmp(word, "stop") == 0) {
-                running = 0;
-            } else if (generate_password(password, sizeof(password), word)) {
+        if (too_long == 1) {
+            printf("Word is too long\n");
+        } else if (strcmp(word, "stop") != 0) {
+            if (generate_password(password, sizeof(password), word)) {
                 printf("Password: %s\n", password);
             } else {
                 printf("Password does not fit\n");
             }
         }
-    }
+    } while (strcmp(word, "stop") != 0);
 
     return 0;
 }

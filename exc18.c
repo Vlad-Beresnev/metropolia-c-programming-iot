@@ -9,17 +9,17 @@ int main(void) {
     int shift;
     int length;
     int character;
-    int running = 1;
     unsigned int number;
     unsigned int result;
 
     srand((unsigned int) time(NULL));
 
-    while (running == 1) {
+    do {
         printf("Enter a number from 0 to 15 or a negative number to stop: ");
         if (fgets(input, sizeof(input), stdin) == NULL) {
-            running = 0;
+            break;
         } else {
+            shift = 0;
             length = strlen(input);
             if (length == sizeof(input) - 1 && input[length - 1] != '\n') {
                 while ((character = getchar()) != '\n' && character != EOF) {
@@ -32,11 +32,10 @@ int main(void) {
 
                 if (sscanf(input, "%d %c", &shift, &extra) != 1) {
                     printf("Invalid input\n");
-                } else if (shift < 0) {
-                    running = 0;
+                    shift = 0;
                 } else if (shift > 15) {
                     printf("Number must be between 0 and 15\n");
-                } else {
+                } else if (shift >= 0) {
                     number = (unsigned int) rand();
                     result = (number >> shift) & 0x3F;
                     printf("Random number: %X\n", number);
@@ -44,7 +43,7 @@ int main(void) {
                 }
             }
         }
-    }
+    } while (shift >= 0);
 
     return 0;
 }
